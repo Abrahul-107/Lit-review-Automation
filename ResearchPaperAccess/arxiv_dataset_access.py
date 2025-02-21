@@ -8,7 +8,7 @@ import time
 #Initialize arXiv client
 client = arxiv.Client()
 
-def search_by_title(title: str, max_results: int = 5):
+def search_by_title(title: str, max_results: int = 15):
     """
     Search for research papers on arXiv by title.
 
@@ -25,9 +25,12 @@ def search_by_title(title: str, max_results: int = 5):
         max_results=max_results,
         sort_by=arxiv.SortCriterion.SubmittedDate
     )
+    final_result = []
     for result in client.results(search):
         print_result(result)
+        final_result.append(result)
     print(f"Total time taken: {time.time() - start_time:.2f} seconds\n")
+    return final_result
 
 def search_by_author(author: str, max_results: int = 5):
     """
