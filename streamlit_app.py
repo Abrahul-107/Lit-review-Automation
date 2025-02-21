@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from ResearchPaperAccess.arxiv_dataset_access import search_by_title
+from LLM_Calls.llama_ratings import get_rating
 
 st.set_page_config(page_title="Literature review System", layout="wide")
 
@@ -54,6 +55,9 @@ def prev_page():
 # --- Search and Data Preparation ---
 if search_button and user_keywords:
     ar_responses = search_by_title(user_keywords)
+
+    # call Llama to get the ratings
+    ratings = get_rating(ar_responses)
     data = []
     for i, response in enumerate(ar_responses):
         data.append(
