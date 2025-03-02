@@ -1,5 +1,5 @@
 from together import Together
-import os
+import os, json
 from dotenv import load_dotenv
 from json_repair import repair_json
 
@@ -38,4 +38,6 @@ def get_rating(response):
     )
 
     # Print the response
-    print(repair_json(response.choices[0].message.content))
+    response = repair_json(response.choices[0].message.content)
+    print(response)
+    return json.loads(response)

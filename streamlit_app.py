@@ -65,6 +65,7 @@ if search_button and user_keywords:
                 "Title": response.title,
                 "URL": response.pdf_url,
                 "Published": response.published,
+                "Rating": ratings.get(response.title, "N/A"),
                 "Accept": f"accept_{i}",
                 "Decline": f"decline_{i}",
             }
@@ -90,9 +91,24 @@ if not st.session_state.all_data.empty:
     )
     current_page_df = st.session_state.all_data[start_index:end_index]
 
+    # column header
+    cols = st.columns([3,2,1,1,1,1], border=True)
+    with cols[0]:
+        st.write("**Title**")
+    with cols[1]:
+        st.write("**URL**")
+    with cols[2]:
+        st.write("**Published**")
+    with cols[3]:
+        st.write("**Rating**")
+    with cols[4]:
+        st.write("**Accept**")
+    with cols[5]:
+        st.write("**Decline**")
+
     def create_button_cells(df):
         for index, row in df.iterrows():
-            cols = st.columns([3,2,1,1,1], border=True)
+            cols = st.columns([3,2,1,1,1,1], border=True)
             with cols[0]:
                 st.write(row["Title"])
             with cols[1]:
@@ -100,6 +116,8 @@ if not st.session_state.all_data.empty:
             with cols[2]:
                 st.write(row["Published"])
             with cols[3]:
+                st.write(row["Rating"])
+            with cols[4]:
                 # Accept Button Logic
                 if st.button(
                     "✓",
@@ -115,7 +133,7 @@ if not st.session_state.all_data.empty:
                     if row["Title"] not in st.session_state.accepted_titles:
                         st.session_state.accepted_titles.append(row["Title"])
 
-            with cols[4]:
+            with cols[5]:
                 # Decline Button Logic
                 if st.button(
                     "❌",
