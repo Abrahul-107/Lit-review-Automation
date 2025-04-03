@@ -179,7 +179,7 @@ body {
     padding: 8px 12px;
     margin-left: 10px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 5px;
 }
 
 .header button.settings-button,
