@@ -39,7 +39,6 @@ def get_rating(response):
 
     # Print the response
     response = repair_json(response.choices[0].message.content)
-    print(response)
     return json.loads(response)
 
 
