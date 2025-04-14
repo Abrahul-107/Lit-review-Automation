@@ -27,9 +27,7 @@ def search_by_title(title: str, max_results: int = 15):
     )
     final_result = []
     for result in client.results(search):
-        print_result(result)
         final_result.append(result)
-    print(f"Total time taken: {time.time() - start_time:.2f} seconds\n")
     return final_result
 
 def search_by_author(author: str, max_results: int = 5):
@@ -49,9 +47,6 @@ def search_by_author(author: str, max_results: int = 5):
         max_results=max_results,
         sort_by=arxiv.SortCriterion.SubmittedDate
     )
-    for result in client.results(search):
-        print_result(result)
-    print(f"Total time taken: {time.time() - start_time:.2f} seconds\n")
 
 
 
@@ -66,17 +61,11 @@ def search_by_category(category: str, max_results: int = 5):
     Returns:
         None: Prints the paper details including title, authors, publication date, and PDF link.
     """
-    start_time = time.time()
     search = arxiv.Search(
         query=f'cat:{category}', 
         max_results=max_results,
         sort_by=arxiv.SortCriterion.SubmittedDate
     )
-    for result in client.results(search):
-        print_result(result)
-    print(f"Total time taken: {time.time() - start_time:.2f} seconds\n")
-
-
 
 def search_by_abstract(keyword: str, max_results: int = 5):
     """
@@ -89,16 +78,11 @@ def search_by_abstract(keyword: str, max_results: int = 5):
     Returns:
         None: Prints the paper details including title, authors, publication date, and PDF link.
     """
-    start_time = time.time()
     search = arxiv.Search(
         query=f'abs:"{keyword}"', 
         max_results=max_results,
         sort_by=arxiv.SortCriterion.SubmittedDate
     )
-    for result in client.results(search):
-        print_result(result)
-    print(f"Total time taken: {time.time() - start_time:.2f} seconds\n")
-
 
 
 def search_by_id(paper_id: str):
@@ -113,30 +97,3 @@ def search_by_id(paper_id: str):
     """
     start_time = time.time()
     search = arxiv.Search(id_list=[paper_id])
-    for result in client.results(search):
-        print_result(result)
-    print(f"Total time taken: {time.time() - start_time:.2f} seconds\n")
-
-
-
-def print_result(result):
-    """
-    Print the details of a given arXiv research paper.
-
-    Args:
-        result (arxiv.Result): The result object containing paper details.
-
-    Returns:
-        None: Prints the title, authors, publication date, and PDF link of the paper.
-    """
-    print(f"Title: {result.title}")
-    print(f"Authors: {', '.join(a.name for a in result.authors)}")
-    print(f"Published: {result.published}")
-    print(f"PDF: {result.pdf_url}\n")
-
-# Example usage:
-# search_by_title("Deep Learning")
-search_by_author("Yann LeCun")
-# search_by_category("cs.AI")
-# search_by_abstract("Neural Networks")
-# search_by_id("2401.12345")
