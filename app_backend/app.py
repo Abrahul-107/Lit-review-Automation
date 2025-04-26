@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify
-import pandas as pd
+from flask import Flask, request, jsonify # type: ignore
+import pandas as pd # type: ignore
 import time
 from ResearchPaperAccess.arxiv_dataset_access import search_by_title
 from llmCalls.llama_ratings import get_rating
+from llmCalls.llama_call_for_keyword import get_keyword_from_userquery
 
 app = Flask(__name__)
 
@@ -14,28 +15,39 @@ data_store = {
 
 @app.route('/search', methods=['POST'])
 def search():
-    data = request.json
-    keywords = data.get("keywords")
-    
-    if not keywords:
-        return jsonify({"error": "Please provide keywords for search."}), 400
-    
-    ar_responses = search_by_title(keywords)
-    ratings = get_rating(ar_responses)
-    
-    data_list = []
-    for idx, response in enumerate(ar_responses):
-        paper_id = int(time.time()) + idx  # Unique ID
-        data_list.append({
-            "id": paper_id,
-            "Title": response.title,
-            "URL": response.pdf_url,
-            "Published": response.published,
-            "Rating": ratings.get(response.pdf_url, "N/A")
-        })
-    
-    data_store["all_data"] = pd.DataFrame(data_list)
-    return jsonify({"papers": data_list})
+    try:
+        data = request.json
+        description = data.get("description")
+        if description:
+            keywords = get_keyword_from_userquery(description)
+        else:
+            keywords = data.get("keywords")
+        
+        
+        if not keywords:
+            return jsonify({"error": "Please provide keywords for search."}), 400
+        
+        ar_responses = search_by_title(keywords)
+        ratings = get_rating(ar_responses)
+        
+        data_list = []
+        for idx, response in enumerate(ar_responses):
+            paper_id = int(time.time()) + idx  # Unique ID
+            data_list.append({
+                "id": paper_id,
+                "Title": response.title,
+                "URL": response.pdf_url,
+                "Published": response.published,
+                "Rating": ratings.get(response.pdf_url, "N/A")
+            })
+        
+        data_store["all_data"] = pd.DataFrame(data_list)
+        return jsonify({"papers": data_list})
+    except Exception as e:
+        return jsonify({"Error":e})
+
+
+
 
 @app.route('/accept', methods=['POST'])
 def accept_papers():
