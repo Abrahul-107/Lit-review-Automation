@@ -1,6 +1,6 @@
 # Research Paper reviewer and writer AI
 
-A Flask API to automate the Research paper review and writing  using an LLM model.
+The Automated Literature Review Bot is designed to streamline and automate the process of reviewing academic literature. By leveraging AI-powered techniques, it helps researchers quickly gather, summarize, and analyze relevant papers, reducing the time required for manual literature reviews
 
 ---
 
