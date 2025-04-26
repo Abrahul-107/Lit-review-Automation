@@ -21,7 +21,7 @@ A Flask API to automate the Research paper review and writing  using an LLM mode
 
 ```bash
 git clone https://github.com/Abrahul-107/Lit-review-Automation.git
-cd research-paper-access-api
+cd Lit-review-Automation
 ```
 
 2. **Install dependencies**
