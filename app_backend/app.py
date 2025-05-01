@@ -113,7 +113,7 @@ def get_headings_llm():
 
     # Ask LLM to give the headings
     headings = get_headings_from_llm(txt_folder, keywords)
-    return jsonify({"headings": headings})
+    return ({"headings": headings})
 
 
 @app.route('/accepted_titles', methods=['GET'])
