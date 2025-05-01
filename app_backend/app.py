@@ -9,6 +9,7 @@ from DownloadResearchPaper.get_papers import download_research_paper
 from RAG.create_database import generate_data_store
 from temp_pdf_to_txt import pdf_to_txt
 
+
 app = Flask(__name__)
 
 # Store session-like data
@@ -31,11 +32,13 @@ def search():
         else:
             keywords = data.get("keywords")
 
+        
         if not keywords:
             return jsonify({"error": "Please provide keywords for search."}), 400
-
+        
         ar_responses = search_by_title(keywords)
         ratings = get_rating(ar_responses)
+        
 
         data_list = []
         for idx, response in enumerate(ar_responses):
@@ -52,7 +55,6 @@ def search():
         return jsonify({"papers": data_list})
     except Exception as e:
         return jsonify({"Error":e})
-
 
 @app.route('/accept', methods=['POST'])
 def accept_papers():
